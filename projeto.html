@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+<style>
+     /* particulas luminosas do fundo */
+      #particulas { 
+        position: fixed;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: nome;
+        overflow: hiddem;
+        z-index: 0;
+      }
+     * {
+    box-sizing: border-box;
+
+     }
+   body {
+     margin: 0;
+     min-height: 100vh;
+     display: grid;
+     place-items: center;
+     padding: 20px;
+     background: #101827;
+     color: #f8fafc;
+     font-family: Arial, sans-serif;
+
+   }
+   .cartao {
+    width: 100%;
+    max-width: 460px;
+    padding: 40px 32px;
+    text-align: center;
+    background: linear-gradient(145deg, #1e293b,#263b5a);
+    border: 1px solid #ffffff18;
+    border-radius: 24px;
+    box-shadow: 0 0 25px #06b6d455, 0 20px 50px #0005;
+    backdrop-filter: blur(10px);
+    transition: transform 0. 3s ease, box-shadow 0. 3s ease;
+    animation: entrada 0.8s ease-out, brilho 3s ease-in-out infinite;
+
+   }
+
+   .cartao:hover { transform: translateY(-12px);
+    box-shadow: 0 0 35px #06b6d488, 0 25px 60px #0007;}
+   
+
+  h1 {
+    color: #67e8f9;
+    font-size: 36px;
+    margin-top: 0;
+    margin-bottom: 18px;
+    letter-spacing: 1px;
+
+   }
+
+  p {
+    line-height: 1.6;
+
+  }
+  button {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 10px;
+    background: #06b6d4;
+    color: #082f49;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px #06b6d433;
+    letter-spacing: 0. 5px
+
+  }
+
+  button:hover {
+    background: #67e8f9;
+    transform: scale(1.05);
+    box-shadow: 0 0 18px #06b6d4aa;
+    border-color: #67e8f9;
+
+  }
+  button:houver {
+     transform: scale(0.95);
+     box-shadow: 0 0 8px #06b6d4aa;
+  }
+
+  @keyframes entrada {
+      from {
+          opacity: 0;
+          transform: translateY(30px);
+      }
+
+      to {
+          opacity: 1;
+          transform: translateY(0);
+
+      }
+
+  }
+  @media (max-width: 480px) {.cartao { 
+    width:100%;
+    max-width: 100%;
+    padding: 28px 20px;
+    box-sizing: border-box;
+  }
+
+   h1 {
+       font-size: 30px;
+
+   }
+
+   button {
+      padding: 12px 16px;
+      font-size: 15px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+   }
+   button:hover {
+    filter: brightness(1.08);
+    cursor: pinter;
+   }
+
+   button:active {
+    transform:scale(0.96);
+   }
+
+ }
+  @media (max-width: 480px) {
+    main.cartao button {
+    display: inline-block;
+    margin: 5px;
+    }
+ }
+  @keyframes brilho {
+    0%, 100% {
+        box-shadow: 0 0 20px #06bbd455;
+    }
+
+    50% {
+         box-shadow: 0 0 35px #06b6d4aa;
+    
+    }
+  }
+  #ranking {
+    lste-style: none;
+    padding: 0;
+    max-width: 320px;
+    margin: 20px auto;
+  }
+
+  #ranking li {
+    background: rgba(6, 182, 212, 0.15);
+    border: 1px solid rgba(6, 182, 212, 0.4);
+    border-radius: 10px;
+    padding: 12px;
+    margin-botton: 8 px;
+    transition: 0.3s;
+
+  }
+  #ranking li:first-child {
+    border: 1px solid #67e8f9;
+    box-shadow: 0 0 12px #06b6d4;
+    font-weight: bold;
+  }
+  /* segundo lugar */
+  #ranking li:nth-child(2) { border-color: #c0c0c0;
+  }
+  /* terceiro lugar */
+  #ranking li:nth-child(3) {  border-color: #cd7f32;
+  }
+  #ranking li:hover { 
+    transform: translatex(8px);
+    background: rgba(6, 182, 212, 0.30);
+    box-shadow:0 0 15px #06b6d4; 
+  }
+</style>
+</head>
+<body>
+    <div id="particulas"></div>
+    <main class="cartao">
+        <h1>olá mundo!</h1>
+        <p>estou aprendendo a criar sites.</p>
+        <button id="botao">clique aqui</button>
+        <button id="reiniciar">reiniciar</button>
+        <p id="mensagem">vamos começar!</p>
+        <div class="painel"> <p>totalCliques: <span id="totalCliques">0</span></p>
+        <p> voltas completas: <span id="totalVoltas">0</span></p>
+        <p> recorde: <span id="recorde">0</span></p>
+        <h2>melhores pontuações</h2>
+        <ol id="ranking"></ol>
+    </div>
+    </main>
+    
+  <script>
+          const botao =
+   document.getElementById("botao");
+    const mensagem =
+   document.getElementById("mensagem");
+    const reiniciar = document.getElementById("reiniciar");
+    const totalCliques = document. getElementById("totalCliques");
+    const totalVoltas = document. getElementById("totalVoltas");
+    const recordPainel = document. getElementById("recorde");
+    const rankingPainel = document.getElementById("ranking");
+    let ranking = JSON.parse(localStorage.getItem("ranking")) || [];
+    function atualizarRanking() { rankingPainel.innerHTML = "";
+    ranking. forEach(function(pontuação,indice) {
+    const item = document.createElement("li");
+    item.textContent = pontuação + " cliques";
+    rankingPainel.appendChild(item);
+
+      });
+    }
+    atualizarRanking();
+    
+        const cores = [
+            "#06b6d4",
+            "#22c55e",
+            "#f97316",
+            "#a855f7",
+            "#ec4899"
+        ];
+
+        let indice = 0;
+        let tamanho = 1;
+        let rotacao = 0;
+        let cliques = Number(localStorage.getItem("cliques")) || 0;
+
+        totalCliques.textContent = cliques;
+
+        let voltasCompletas = 0;
+        let recorde = Number(localStorage.getItem("recorde")) || 0;
+
+        localStorage.setItem("cliques", cliques);
+        recordPainel.textContent = recorde;
+        localStorage.setItem("recorde", recorde);
+        botao.addEventListener("click", function()
+    {
+        cliques++;
+        localStorage.setItem("cliques", cliques);
+        console. log("Cliques:", cliques);
+        totalCliques.textContent = cliques;
+        if (cliques > recorde) {
+            recorde = cliques;
+            recordPainel. textContent = recorde;
+            localStorage.setItem("recorde", recorde);
+            ranking.push(cliques);
+            ranking.sort(function(a, b) { return b - a;
+
+            });
+            ranking = ranking.slice(0, 5);
+
+            localStorage.setItem("ranking",JSON.stringify(ranking));
+
+            atualizarRanking();
+        }
+        mensagem.textContent = "você clicou" + cliques + " vezes!";
+        if (cliques === 5) {
+            mensagem.textContent = "muito bem! você chegou a 5 cliques!";
+             } else if (cliques === 10) {
+            mensagem. textContent = "incrivel! você chegou a 10 cliques! ";
+            document. querySelector (".cartao") .style.boshadow = "0 0 50px #06b6d4, 0 0 80px #06b6d488";
+             } else if (cliques === 15) {
+            mensagem.textContent = "você esta dominando esse botao! ";
+        }
+         botao.style.backgroundColor = cores[indice];
+
+         indice = (indice + 1) % cores.length;
+
+         if (tamanho === 1) {
+            tamanho = 1.3;
+         } else {
+            tamanho = 1;
+         }
+
+         botao.style.transform = `scale(${tamanho})`;
+         rotacao += 60;
+
+         if (rotacao >= 360) {
+            rotacao = 0;
+            voltasCompletas++;
+
+         }
+          totalVoltas.textContent = voltasCompletas;
+         botao.style.rotate = rotacao + "deg";
+    
+ });
+    reiniciar.addEventListener("click", function(){
+        cliques = 0;
+        localStorage.setItem("cliques", cliques);
+        indice = 0;
+        tamanho = 1;
+        rotacao = 0;
+        voltasCompletas = 0;
+        totalCliques.textContent = 0;
+        totalVoltas.textContent = 0;
+        botao.style.backgroundColor = "";
+        botao.style.transform = "scale(1)";
+        botao.style.rotate = "odeg";
+
+        mensagem.textContent = "vamos começar!";
+    });
+  </script>
+</body>
+</html>
